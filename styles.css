@@ -20,7 +20,12 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3, h4, h5, .font-heading {
+h1,
+h2,
+h3,
+h4,
+h5,
+.font-heading {
   font-family: 'Outfit', sans-serif;
 }
 
@@ -37,13 +42,16 @@ h1, h2, h3, h4, h5, .font-heading {
 ::-webkit-scrollbar {
   width: 6px;
 }
+
 ::-webkit-scrollbar-track {
   background: var(--bg-dark);
 }
+
 ::-webkit-scrollbar-thumb {
   background: #334155;
   border-radius: 10px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: #475569;
 }
@@ -60,9 +68,12 @@ h1, h2, h3, h4, h5, .font-heading {
 }
 
 @keyframes pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 1;
   }
+
   50% {
     opacity: .7;
   }
@@ -81,7 +92,8 @@ h1, h2, h3, h4, h5, .font-heading {
 .score-ring::before {
   content: "";
   position: absolute;
-  inset: 8px; /* Thickness of the ring */
+  inset: 8px;
+  /* Thickness of the ring */
   background: var(--bg-card);
   border-radius: 50%;
 }
@@ -96,4 +108,11 @@ h1, h2, h3, h4, h5, .font-heading {
   display: grid;
   grid-template-columns: 280px 1fr;
   min-height: 100vh;
+}
+
+@media (max-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
 }

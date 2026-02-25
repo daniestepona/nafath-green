@@ -116,66 +116,66 @@ function renderDashboard(metrics) {
     const scoreColorClass = metrics.esgScore > 75 ? 'text-emerald-400' : 'text-amber-400';
 
     appContent.innerHTML = `
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-8">
             <!-- Core Metric Card -->
             <div class="glass-panel rounded-2xl p-6 hover-glow relative overflow-hidden group">
                 <div class="absolute -right-10 -top-10 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl group-hover:bg-emerald-500/20 transition-all"></div>
                 <div class="flex justify-between items-start mb-4">
                     <div>
-                        <p class="text-sm font-semibold text-slate-400 uppercase tracking-widest mb-1">Total Carbon Footprint</p>
-                        <h3 class="text-4xl font-heading font-bold text-white">${metrics.totalEmissionsTons} <span class="text-lg text-slate-500 font-medium">tCO2e</span></h3>
+                        <p class="text-xs lg:text-sm font-semibold text-slate-400 uppercase tracking-widest mb-1">Total Carbon Footprint</p>
+                        <h3 class="text-3xl lg:text-4xl font-heading font-bold text-white">${metrics.totalEmissionsTons} <span class="text-base lg:text-lg text-slate-500 font-medium">tCO2e</span></h3>
                     </div>
-                    <div class="p-3 bg-slate-800/80 rounded-xl border border-slate-700 shadow-inner">
-                        <i data-lucide="cloud-fog" class="w-6 h-6 text-slate-300"></i>
+                    <div class="p-2 lg:p-3 bg-slate-800/80 rounded-xl border border-slate-700 shadow-inner shrink-0">
+                        <i data-lucide="cloud-fog" class="w-5 h-5 lg:w-6 lg:h-6 text-slate-300"></i>
                     </div>
                 </div>
-                <div class="flex items-center gap-2 mt-6 p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
-                    <i data-lucide="trending-down" class="w-4 h-4 text-emerald-400"></i>
-                    <p class="text-xs text-emerald-400 font-medium">-12% vs last month</p>
+                <div class="flex items-center gap-2 mt-4 lg:mt-6 p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20 w-max">
+                    <i data-lucide="trending-down" class="w-3 h-3 lg:w-4 lg:h-4 text-emerald-400"></i>
+                    <p class="text-[10px] lg:text-xs text-emerald-400 font-medium">-12% vs last month</p>
                 </div>
             </div>
 
             <!-- The ESG Score Ring -->
             <div class="glass-panel rounded-2xl p-6 flex flex-col items-center justify-center relative hover-glow">
-                <p class="text-sm font-semibold text-slate-400 uppercase tracking-widest mb-4 w-full text-left">Real-Time ESG Score</p>
-                <div class="score-ring w-32 h-32" style="--score: ${metrics.esgScore};">
+                <p class="text-xs lg:text-sm font-semibold text-slate-400 uppercase tracking-widest mb-4 w-full text-center lg:text-left">Real-Time ESG Score</p>
+                <div class="score-ring w-24 h-24 lg:w-32 lg:h-32" style="--score: ${metrics.esgScore};">
                     <div class="score-value text-center tracking-tight">
-                        <h2 class="text-4xl font-heading font-bold ${scoreColorClass} drop-shadow-md">${metrics.esgScore}</h2>
-                        <span class="text-[10px] text-slate-400 uppercase tracking-widest font-bold">/ 100</span>
+                        <h2 class="text-3xl lg:text-4xl font-heading font-bold ${scoreColorClass} drop-shadow-md">${metrics.esgScore}</h2>
+                        <span class="text-[9px] lg:text-[10px] text-slate-400 uppercase tracking-widest font-bold">/ 100</span>
                     </div>
                 </div>
-                <p class="text-xs text-slate-300 mt-4 text-center max-w-[200px]">Classified as <b>Prime Green</b>. Eligible for subsidized Vision 2030 capital.</p>
+                <p class="text-[10px] lg:text-xs text-slate-300 mt-4 text-center max-w-[200px]">Classified as <b>Prime Green</b>. Eligible for subsidized Vision 2030 capital.</p>
             </div>
 
             <!-- Scope Breakdown -->
             <div class="glass-panel rounded-2xl p-6 hover-glow">
-                <p class="text-sm font-semibold text-slate-400 uppercase tracking-widest mb-4">Emissions Sandbox (Scopes)</p>
+                <p class="text-xs lg:text-sm font-semibold text-slate-400 uppercase tracking-widest mb-4">Emissions Sandbox (Scopes)</p>
                 <div class="space-y-4">
                     <div>
-                        <div class="flex justify-between text-xs mb-1">
+                        <div class="flex justify-between text-[10px] lg:text-xs mb-1">
                             <span class="text-slate-300 font-medium">Scope 1 (Direct Fuels)</span>
                             <span class="text-white font-bold">${metrics.scope1Tons}t</span>
                         </div>
-                        <div class="w-full bg-slate-800 rounded-full h-2">
-                            <div class="bg-blue-500 h-2 rounded-full" style="width: 25%"></div>
+                        <div class="w-full bg-slate-800 rounded-full h-1.5 lg:h-2">
+                            <div class="bg-blue-500 h-1.5 lg:h-2 rounded-full" style="width: 25%"></div>
                         </div>
                     </div>
                     <div>
-                        <div class="flex justify-between text-xs mb-1">
+                        <div class="flex justify-between text-[10px] lg:text-xs mb-1">
                             <span class="text-slate-300 font-medium">Scope 2 (Electricity)</span>
                             <span class="text-white font-bold">${metrics.scope2Tons}t</span>
                         </div>
-                        <div class="w-full bg-slate-800 rounded-full h-2">
-                            <div class="bg-emerald-400 h-2 rounded-full" style="width: 15%"></div>
+                        <div class="w-full bg-slate-800 rounded-full h-1.5 lg:h-2">
+                            <div class="bg-emerald-400 h-1.5 lg:h-2 rounded-full" style="width: 15%"></div>
                         </div>
                     </div>
                     <div>
-                        <div class="flex justify-between text-xs mb-1">
+                        <div class="flex justify-between text-[10px] lg:text-xs mb-1">
                             <span class="text-slate-300 font-medium">Scope 3 (Supply Chain)</span>
                             <span class="text-white font-bold">${metrics.scope3Tons}t</span>
                         </div>
-                        <div class="w-full bg-slate-800 rounded-full h-2">
-                            <div class="bg-amber-400 h-2 rounded-full" style="width: 60%"></div>
+                        <div class="w-full bg-slate-800 rounded-full h-1.5 lg:h-2">
+                            <div class="bg-amber-400 h-1.5 lg:h-2 rounded-full" style="width: 60%"></div>
                         </div>
                     </div>
                 </div>
@@ -184,44 +184,44 @@ function renderDashboard(metrics) {
 
         <!-- Financial Nexus / Graph Area -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div class="glass-panel rounded-2xl p-6">
-                 <div class="flex justify-between items-center mb-6">
-                    <h3 class="font-heading font-semibold text-lg text-white">Carbon Trajectory</h3>
-                    <select class="bg-slate-800 border border-slate-700 text-xs rounded-lg px-2 py-1 text-slate-300 outline-none">
+            <div class="glass-panel rounded-2xl p-4 lg:p-6 pb-2">
+                 <div class="flex justify-between items-center mb-4 lg:mb-6">
+                    <h3 class="font-heading font-semibold text-base lg:text-lg text-white">Carbon Trajectory</h3>
+                    <select class="bg-slate-800 border border-slate-700 text-[10px] lg:text-xs rounded-lg px-2 py-1 text-slate-300 outline-none">
                         <option>Last 30 Days</option>
                     </select>
                 </div>
-                <div class="h-64 relative w-full">
+                <div class="h-48 lg:h-64 relative w-full overflow-hidden">
                     <canvas id="emissionsChart"></canvas>
                 </div>
             </div>
 
              <div class="glass-panel rounded-2xl p-0 overflow-hidden flex flex-col">
-                <div class="p-6 border-b border-slate-700/50 bg-slate-800/30 flex justify-between items-center">
-                    <h3 class="font-heading font-semibold text-lg text-white">Recent Top Emitters (Ingested)</h3>
-                    <span class="text-xs text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded-md border border-emerald-500/20 font-medium">Live from SAMA</span>
+                <div class="p-4 lg:p-6 border-b border-slate-700/50 bg-slate-800/30 flex justify-between items-center gap-2">
+                    <h3 class="font-heading font-semibold text-base lg:text-lg text-white truncate">Recent Top Emitters</h3>
+                    <span class="text-[9px] lg:text-xs text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded-md border border-emerald-500/20 font-medium whitespace-nowrap hidden sm:inline-block">Live from SAMA</span>
                 </div>
                 <div class="flex-1 overflow-y-auto p-2">
                     ${metrics.transactions.slice(0, 4).map(tx => `
-                        <div class="flex items-center justify-between p-3 hover:bg-slate-800/50 rounded-xl transition-colors mb-1">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center">
-                                    <i data-lucide="${getIconForCategory(tx.category)}" class="w-4 h-4 text-slate-400"></i>
+                        <div class="flex items-center justify-between p-3 hover:bg-slate-800/50 rounded-xl transition-colors mb-1 gap-2">
+                            <div class="flex items-center gap-2 lg:gap-3 overflow-hidden">
+                                <div class="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center shrink-0">
+                                    <i data-lucide="${getIconForCategory(tx.category)}" class="w-3 h-3 lg:w-4 lg:h-4 text-slate-400"></i>
                                 </div>
-                                <div>
-                                    <p class="text-sm font-semibold text-white">${tx.vendor}</p>
-                                    <p class="text-[10px] text-slate-500 uppercase tracking-wider">${tx.date} &bull; Scope ${tx.scope}</p>
+                                <div class="overflow-hidden">
+                                    <p class="text-xs lg:text-sm font-semibold text-white truncate">${tx.vendor}</p>
+                                    <p class="text-[9px] lg:text-[10px] text-slate-500 uppercase tracking-wider truncate">${tx.date} &bull; Scope ${tx.scope}</p>
                                 </div>
                             </div>
-                            <div class="text-right">
-                                <p class="text-sm font-bold text-amber-500">${(tx.co2_kg / 1000).toFixed(2)} tCO2</p>
-                                <p class="text-[10px] text-slate-500 font-medium">${tx.amount_sar.toLocaleString()} SAR</p>
+                            <div class="text-right shrink-0">
+                                <p class="text-xs lg:text-sm font-bold text-amber-500">${(tx.co2_kg / 1000).toFixed(2)} tCO2</p>
+                                <p class="text-[9px] lg:text-[10px] text-slate-500 font-medium">${tx.amount_sar.toLocaleString()} SAR</p>
                             </div>
                         </div>
                     `).join('')}
                 </div>
                 <div class="p-3 bg-slate-800/50 border-t border-slate-700/50 text-center">
-                    <button class="text-xs font-semibold text-emerald-400 hover:text-emerald-300 transition-colors uppercase tracking-widest" onclick="document.getElementById('nav-transactions').click()">View Full Ledger &rarr;</button>
+                    <button class="text-[10px] lg:text-xs font-semibold text-emerald-400 hover:text-emerald-300 transition-colors uppercase tracking-widest" onclick="document.getElementById('nav-transactions').click()">View Full Ledger &rarr;</button>
                 </div>
             </div>
         </div>
