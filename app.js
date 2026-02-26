@@ -83,7 +83,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const navItems = {
         'nav-dashboard': () => renderDashboard(metrics),
         'nav-transactions': () => renderTransactionFeed(metrics),
-        'nav-financing': () => renderFinancingCenter(metrics)
+        'nav-financing': () => renderFinancingCenter(metrics),
+        'nav-supplychain': () => renderSupplyChain(metrics)
     };
 
     Object.keys(navItems).forEach(id => {
@@ -397,6 +398,99 @@ function renderFinancingCenter(metrics) {
                 </div>
             </div>
         `}
+    `;
+    lucide.createIcons();
+}
+
+// --- View: Supply Chain ---
+function renderSupplyChain(metrics) {
+    const appContent = document.getElementById('app-content');
+
+    const scope3Txs = metrics.transactions.filter(tx => tx.scope === 3);
+
+    appContent.innerHTML = `
+        <div class="mb-8 flex justify-between items-end">
+            <div>
+                <h2 class="text-2xl font-heading font-bold text-white mb-2 flex items-center gap-3">
+                    <i data-lucide="network" class="w-6 h-6 text-emerald-400"></i>
+                    Supply Chain (Scope 3)
+                </h2>
+                <p class="text-sm text-slate-400 max-w-2xl">Analyze your indirect value chain emissions. Scope 3 often represents the largest portion of a company's carbon footprint.</p>
+            </div>
+             <div class="p-4 rounded-xl glass-panel text-right">
+                <p class="text-xs uppercase tracking-widest font-bold text-slate-500 mb-1">Total Scope 3</p>
+                <div class="text-3xl font-heading font-bold text-amber-500">${metrics.scope3Tons}<span class="text-sm text-slate-500 whitespace-nowrap"> tCO2e</span></div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="glass-panel p-6 rounded-2xl flex flex-col justify-center relative overflow-hidden group hover:border-amber-500/30 transition-all">
+                <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl group-hover:bg-amber-500/20 transition-all"></div>
+                <h4 class="text-sm font-semibold text-slate-400 uppercase tracking-widest mb-4">Emissions Impact</h4>
+                <div class="flex items-center gap-4">
+                     <div class="w-16 h-16 rounded-full border-4 border-slate-700 flex items-center justify-center border-t-amber-500 relative transform -rotate-45">
+                        <span class="transform rotate-45 text-sm font-bold text-white">60%</span>
+                     </div>
+                     <div>
+                         <p class="text-xs text-slate-300">Scope 3 accounts for <b>60%</b> of your total carbon footprint.</p>
+                     </div>
+                </div>
+            </div>
+
+            <div class="glass-panel p-6 rounded-2xl bg-slate-800/30 border-blue-500/20 hover:border-blue-500/40 transition-all">
+                <h4 class="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+                    <i data-lucide="lightbulb" class="w-4 h-4 text-blue-400"></i> AI Recommendation
+                </h4>
+                <p class="text-xs text-slate-300 leading-relaxed mb-4">Your logistics emissions (Naqel Logistics) are 15% above the industry average. Switching to a green-certified logistics provider can improve your ESG score by +4 points.</p>
+                <button class="text-[10px] font-bold text-blue-400 hover:text-white uppercase tracking-widest border border-blue-500/30 hover:bg-blue-500/20 px-4 py-2 rounded-lg transition-all w-full sm:w-auto text-center">
+                    Find Green Vendors <i data-lucide="arrow-right" class="w-3 h-3 inline"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="glass-panel rounded-2xl overflow-hidden border border-slate-700/50 shadow-2xl">
+            <div class="p-4 lg:p-6 border-b border-slate-700/50 bg-slate-800/30 flex justify-between items-center gap-2">
+                <h3 class="font-heading font-semibold text-base lg:text-lg text-white truncate">Scope 3 Vendors Ledger</h3>
+                <span class="text-[9px] lg:text-xs text-amber-400 bg-amber-500/10 px-2 py-1 rounded-md border border-amber-500/20 font-medium whitespace-nowrap hidden sm:inline-block">Extracted via ZATCA E-Invoicing</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm text-slate-300">
+                    <thead class="text-xs text-slate-400 uppercase tracking-wider bg-slate-800/80 border-b border-slate-700/50">
+                        <tr>
+                            <th class="px-4 lg:px-6 py-4 font-semibold">Vendor</th>
+                            <th class="px-4 lg:px-6 py-4 font-semibold hidden sm:table-cell">Category</th>
+                            <th class="px-4 lg:px-6 py-4 font-semibold text-right">Attributed GHG</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-700/50">
+                        ${scope3Txs.map(tx => `
+                            <tr class="hover:bg-slate-800/30 transition-colors">
+                                <td class="px-4 lg:px-6 py-4">
+                                     <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center shrink-0">
+                                            <i data-lucide="${getIconForCategory(tx.category)}" class="w-3 h-3 text-amber-400"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-semibold text-slate-200">${tx.vendor}</div>
+                                            <div class="text-[9px] lg:text-[10px] text-slate-500 mt-0.5">Last TX: ${tx.date}</div>
+                                            <!-- Mobile only category -->
+                                            <span class="sm:hidden px-2 py-0.5 mt-1 rounded bg-slate-800 border border-slate-700 text-[9px] font-medium text-slate-400 inline-block">${tx.category.toUpperCase().replace('_', ' ')}</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-4 lg:px-6 py-4 hidden sm:table-cell">
+                                    <span class="px-2 py-1 rounded bg-slate-800 border border-slate-700 text-[10px] font-medium text-slate-300 inline-block">${tx.category.toUpperCase().replace('_', ' ')}</span>
+                                </td>
+                                <td class="px-4 lg:px-6 py-4 text-right">
+                                    <div class="font-bold text-amber-500">${(tx.co2_kg / 1000).toFixed(3)}</div>
+                                    <div class="text-[10px] text-slate-500">tCO2e</div>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     `;
     lucide.createIcons();
 }
