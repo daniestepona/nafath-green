@@ -86,6 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'nav-financing': () => renderFinancingCenter(metrics),
         'nav-supplychain': () => renderSupplyChain(metrics),
         'nav-integrations': () => renderIntegrations(metrics),
+        'nav-assets': () => renderAssetIntelligence(),
         'nav-portfolio': () => renderPortfolio()
     };
 
@@ -715,6 +716,113 @@ function renderPortfolio() {
                     </tbody>
                 </table>
             </div>
+        </div>
+    `;
+    lucide.createIcons();
+}
+
+// --- View: Asset Intelligence (Precision Demo) ---
+function renderAssetIntelligence() {
+    const appContent = document.getElementById('app-content');
+
+    appContent.innerHTML = `
+        <div class="mb-8 flex justify-between items-end border-b border-indigo-500/20 pb-6">
+            <div>
+                <span class="px-3 py-1 bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 rounded-lg text-xs font-bold uppercase tracking-widest mb-3 inline-block">ZATCA e-Invoice Engine</span>
+                <h2 class="text-2xl lg:text-3xl font-heading font-bold text-white mb-2 flex items-center gap-3">
+                    <i data-lucide="microchip" class="w-6 h-6 lg:w-8 lg:h-8 text-indigo-400"></i>
+                    Asset-Level Precision (The "Old Truck" Scenario)
+                </h2>
+                <p class="text-sm text-slate-400 max-w-3xl leading-relaxed">Demonstrating how Nafath Green moves beyond basic banking estimates by ingesting official Saudi tax invoices (ZATCA / Fatoora) to detect exactly <i>what</i> an SME purchased, mathematically preventing "Greenwashing".</p>
+            </div>
+        </div>
+
+        <!-- The Scenario Comparison -->
+        <h3 class="text-lg font-heading font-bold text-white mb-4">Transaction: SAR 120,000 paid to Abdul Latif Jameel Motors</h3>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            
+            <!-- Standard Bank Estimate (Flawed) -->
+            <div class="glass-panel p-6 rounded-2xl flex flex-col relative overflow-hidden border border-slate-700/50 grayscale hover:grayscale-0 transition-all opacity-80">
+                <div class="flex justify-between items-start mb-6 border-b border-slate-700/50 pb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center p-2 border border-slate-700">
+                             <i data-lucide="landmark" class="w-5 h-5 text-slate-400"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white">Standard Banking Logic</h4>
+                            <p class="text-[10px] text-slate-500 uppercase tracking-widest">Spend-Based Estimate</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-4 mb-6 flex-1">
+                    <div class="p-3 bg-slate-800/50 rounded-lg border border-slate-700">
+                        <p class="text-xs text-slate-400 mb-1">What the Bank API sees:</p>
+                        <p class="font-mono text-sm text-white">"ALJ Motors - SAR 120,000"</p>
+                    </div>
+                     <div class="p-3 bg-red-500/10 rounded-lg border border-red-500/20">
+                        <p class="text-[10px] font-bold text-red-400 uppercase tracking-widest mb-1 flex items-center gap-1"><i data-lucide="alert-triangle" class="w-3 h-3"></i> The Blind Spot</p>
+                        <p class="text-xs text-slate-300">The bank algorithm simply multiplies SAR 120,000 by a generic "Automotive Sector" carbon multiplier. It does not know if the company bought an EV or a highly-polluting old diesel truck.</p>
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t border-slate-700/50 flex justify-between items-center bg-slate-800/20 -mx-6 -mb-6 px-6 py-4">
+                    <span class="text-xs text-slate-400 font-semibold">Generic Carbon Estimate:</span>
+                    <span class="text-xl font-bold text-slate-300">14.5 tCO2e</span>
+                </div>
+            </div>
+
+            <!-- Nafath Green ZATCA Precision (Accurate) -->
+            <div class="glass-panel p-6 rounded-2xl flex flex-col relative overflow-hidden border border-indigo-500/30 shadow-lg shadow-indigo-500/10">
+                <div class="absolute -right-10 -top-10 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl"></div>
+                
+                <div class="flex justify-between items-start mb-6 border-b border-slate-700/50 pb-4 relative z-10">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-indigo-500/20 flex items-center justify-center p-1 border border-indigo-500/30">
+                            <span class="text-indigo-400 font-black text-[10px] uppercase">ZATCA</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white">Nafath Green Logic</h4>
+                            <p class="text-[10px] text-indigo-400 uppercase tracking-widest font-bold">Line-Item Exact precision</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-4 mb-6 flex-1 relative z-10">
+                    <div class="p-3 bg-indigo-900/30 rounded-lg border border-indigo-500/30">
+                        <p class="text-xs text-slate-400 mb-1">What Nafath Green extracts via e-Invoice:</p>
+                        <div class="font-mono text-sm text-white flex flex-col gap-1">
+                            <span class="text-indigo-300">Item: <span class="text-white">"2012 Toyota Hilux 2.4L Diesel"</span></span>
+                            <span class="text-indigo-300">VIN: <span class="text-white">JT1234567890</span></span>
+                            <span class="text-indigo-300">Price: <span class="text-white">SAR 120,000</span></span>
+                        </div>
+                    </div>
+                     <div class="p-3 bg-emerald-500/10 rounded-lg border border-emerald-500/20">
+                        <p class="text-[10px] font-bold text-emerald-400 uppercase tracking-widest mb-1 flex items-center gap-1"><i data-lucide="check-circle-2" class="w-3 h-3"></i> Fraud Prevention Active</p>
+                        <p class="text-xs text-slate-300">Our AI maps the exact engine type (Older Diesel) to global EPA emissions factors. Because it is a heavily polluting older asset, the ESG score is mathematically penalized, protecting the bank's Green Capital criteria.</p>
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t border-slate-700/50 flex justify-between items-center bg-indigo-900/20 -mx-6 -mb-6 px-6 py-4">
+                    <span class="text-xs text-indigo-300 font-semibold">Audited Asset Emissions Profile:</span>
+                    <span class="text-2xl font-black text-amber-500 bg-amber-500/10 px-3 py-1 rounded border border-amber-500/20">38.2 tCO2e</span>
+                </div>
+            </div>
+
+        </div>
+        
+        <div class="bg-indigo-900/40 border border-indigo-500/30 p-6 rounded-2xl flex items-center justify-between gap-6">
+             <div class="flex items-center gap-4">
+                 <div class="p-3 rounded-full bg-indigo-500/20 shrink-0">
+                    <i data-lucide="satellite" class="w-6 h-6 text-indigo-400"></i>
+                 </div>
+                 <div>
+                     <h4 class="font-bold text-white text-lg">Phase 3: Telematics Fleet Integration</h4>
+                     <p class="text-sm text-slate-300 max-w-2xl mt-1">For Enterprise construction clients, Nafath Green plugs directly into GPS Fleet APIs (Geotab/Samsara) to stream live engine fuel consumption into the ESG dashboard in real-time.</p>
+                 </div>
+             </div>
+             <button class="shrink-0 px-4 py-2 bg-indigo-500 hover:bg-indigo-400 text-slate-900 font-bold rounded-lg transition-colors text-sm">View Fleet API Docs</button>
         </div>
     `;
     lucide.createIcons();
