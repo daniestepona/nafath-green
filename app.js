@@ -84,7 +84,9 @@ document.addEventListener('DOMContentLoaded', () => {
         'nav-dashboard': () => renderDashboard(metrics),
         'nav-transactions': () => renderTransactionFeed(metrics),
         'nav-financing': () => renderFinancingCenter(metrics),
-        'nav-supplychain': () => renderSupplyChain(metrics)
+        'nav-supplychain': () => renderSupplyChain(metrics),
+        'nav-integrations': () => renderIntegrations(metrics),
+        'nav-portfolio': () => renderPortfolio()
     };
 
     Object.keys(navItems).forEach(id => {
@@ -93,17 +95,47 @@ document.addEventListener('DOMContentLoaded', () => {
             el.addEventListener('click', (e) => {
                 e.preventDefault();
                 // Update active state
-                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active', 'bg-emerald-500/10', 'text-emerald-400', 'border-emerald-500/20'));
+                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active', 'bg-emerald-500/10', 'text-emerald-400', 'border-emerald-500/20', 'bg-blue-900/40', 'border-blue-500/30', 'text-blue-400'));
                 document.querySelectorAll('.nav-item').forEach(nav => nav.classList.add('text-slate-400'));
 
                 el.classList.remove('text-slate-400');
-                el.classList.add('active', 'bg-emerald-500/10', 'text-emerald-400', 'border', 'border-emerald-500/20');
+
+                // Color specific styling based on section
+                if (id === 'nav-portfolio') {
+                    el.classList.add('active', 'bg-blue-900/40', 'text-blue-400', 'border', 'border-blue-500/30');
+                } else {
+                    el.classList.add('active', 'bg-emerald-500/10', 'text-emerald-400', 'border', 'border-emerald-500/20');
+                }
 
                 navItems[id](); // render view
                 lucide.createIcons(); // refresh icons newly added to DOM
             });
         }
     });
+
+    // Mock Export Report Functionality
+    const exportBtn = document.getElementById('export-report-btn');
+    if (exportBtn) {
+        exportBtn.addEventListener('click', () => {
+            const originalHTML = exportBtn.innerHTML;
+            exportBtn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 shrink-0 animate-spin"></i><span class="hidden sm:inline">Generating PDPL Report...</span>`;
+            lucide.createIcons();
+
+            setTimeout(() => {
+                exportBtn.innerHTML = `<i data-lucide="check-circle-2" class="w-4 h-4 shrink-0 text-white"></i><span class="hidden sm:inline text-white">Report Downloaded</span>`;
+                exportBtn.classList.replace('bg-emerald-500/10', 'bg-emerald-600');
+                exportBtn.classList.replace('text-emerald-400', 'text-white');
+                lucide.createIcons();
+
+                setTimeout(() => {
+                    exportBtn.innerHTML = originalHTML;
+                    exportBtn.classList.replace('bg-emerald-600', 'bg-emerald-500/10');
+                    exportBtn.classList.replace('text-white', 'text-emerald-400');
+                    lucide.createIcons();
+                }, 3000);
+            }, 1500);
+        });
+    }
 
     // Initial Load
     renderDashboard(metrics);
@@ -487,6 +519,199 @@ function renderSupplyChain(metrics) {
                                 </td>
                             </tr>
                         `).join('')}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    `;
+    lucide.createIcons();
+}
+
+// --- View: Integrations Hub ---
+function renderIntegrations(metrics) {
+    const appContent = document.getElementById('app-content');
+
+    appContent.innerHTML = `
+        <div class="mb-8 flex justify-between items-end">
+            <div>
+                <h2 class="text-2xl font-heading font-bold text-white mb-2 flex items-center gap-3">
+                    <i data-lucide="plug-zap" class="w-6 h-6 text-emerald-400"></i>
+                    Government & Banking Integrations
+                </h2>
+                <p class="text-sm text-slate-400 max-w-2xl">Manage your active API connections. Nafath Green securely syncs your corporate data in real-time to generate your certified ESG score without manual data entry.</p>
+            </div>
+             <div class="hidden sm:block">
+                <span class="px-3 py-1 rounded bg-slate-800 border border-slate-700 text-xs font-semibold text-slate-300">PDPL Compliant &bull; Hosted on SCCC</span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+            
+            <!-- Integration: SAMA API -->
+            <div class="glass-panel p-6 rounded-2xl flex flex-col relative overflow-hidden group hover:border-emerald-500/30 transition-all border border-emerald-500/20">
+                <div class="absolute -right-6 -top-6 w-24 h-24 bg-emerald-500/10 rounded-full blur-xl group-hover:bg-emerald-500/20 transition-all"></div>
+                <div class="flex justify-between items-start mb-4 relative z-10">
+                    <div class="w-12 h-12 rounded-xl bg-white flex items-center justify-center p-2 border border-slate-200 shadow-sm shrink-0">
+                        <span class="text-green-800 font-bold text-[10px] text-center uppercase leading-tight">SAMA<br>Open Bank</span>
+                    </div>
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-widest border border-emerald-500/30">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Connected
+                    </span>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-1">Saudi Central Bank (SAMA)</h3>
+                <p class="text-xs text-slate-400 mb-4 flex-1">Real-time ledger processing. Analyzing ${metrics.transactions.length} recent corporate expenditures to map direct and value-chain emissions.</p>
+                <div class="pt-4 border-t border-slate-700/50 flex justify-between items-center">
+                    <span class="text-[10px] text-slate-500">Last sync: 12 seconds ago</span>
+                    <button class="text-[10px] text-slate-400 hover:text-white transition-colors">Manage Sync Config &rarr;</button>
+                </div>
+            </div>
+
+            <!-- Integration: ZATCA -->
+            <div class="glass-panel p-6 rounded-2xl flex flex-col relative overflow-hidden group hover:border-emerald-500/30 transition-all border border-emerald-500/20">
+                <div class="absolute -right-6 -top-6 w-24 h-24 bg-emerald-500/10 rounded-full blur-xl group-hover:bg-emerald-500/20 transition-all"></div>
+                <div class="flex justify-between items-start mb-4 relative z-10">
+                     <div class="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center border border-slate-300 shadow-sm p-1 shrink-0">
+                        <span class="text-slate-800 font-black text-xs">ZATCA</span>
+                    </div>
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-widest border border-emerald-500/30">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Connected
+                    </span>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-1">ZATCA E-Invoicing (FATOORA)</h3>
+                <p class="text-xs text-slate-400 mb-4 flex-1">Extracts line-item materials data from incoming supply chain B2B invoices to accurately calculate Scope 3 impact.</p>
+                <div class="pt-4 border-t border-slate-700/50 flex justify-between items-center">
+                    <span class="text-[10px] text-slate-500">Last sync: 2 hours ago</span>
+                    <button class="text-[10px] text-slate-400 hover:text-white transition-colors">View Logs &rarr;</button>
+                </div>
+            </div>
+
+            <!-- Integration: Nafath ID -->
+            <div class="glass-panel p-6 rounded-2xl flex flex-col relative overflow-hidden group hover:border-emerald-500/30 transition-all border border-emerald-500/20">
+                 <div class="absolute -right-6 -top-6 w-24 h-24 bg-emerald-500/10 rounded-full blur-xl group-hover:bg-emerald-500/20 transition-all"></div>
+                <div class="flex justify-between items-start mb-4 relative z-10">
+                    <div class="w-12 h-12 rounded-xl bg-slate-800 flex items-center justify-center shrink-0 border border-slate-700">
+                        <span class="text-white font-bold text-[10px] text-center uppercase tracking-widest leading-tight">Nafath<br>App</span>
+                    </div>
+                     <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-widest border border-emerald-500/30">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Verified
+                    </span>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-1">National Unified Access</h3>
+                <p class="text-xs text-slate-400 mb-4 flex-1">Corporate identity verification linked to the General Manager. Ensures PDPL compliance for data authorization.</p>
+                <div class="pt-4 border-t border-slate-700/50 flex items-center justify-between">
+                    <div class="flex -space-x-2 overflow-hidden">
+                        <div class="inline-block h-6 w-6 rounded-full border-2 border-slate-800 bg-emerald-500 flex items-center justify-center text-[8px] font-bold text-white">GM</div>
+                    </div>
+                    <span class="text-[10px] text-emerald-500">Session Active</span>
+                </div>
+            </div>
+            
+             <!-- Integration: SAP ERP -->
+             <div class="glass-panel p-6 rounded-2xl flex flex-col relative overflow-hidden transition-all border border-slate-700/50 opacity-70 hover:opacity-100">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-slate-800 flex items-center justify-center border border-slate-700 p-2 shrink-0">
+                       <span class="text-blue-400 font-bold text-xs uppercase text-center">SAP<br>ERP</span>
+                    </div>
+                     <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-800 text-slate-400 text-[10px] font-bold uppercase tracking-widest border border-slate-700">
+                        Available
+                    </span>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-1">SAP / Oracle ERP Sync</h3>
+                <p class="text-xs text-slate-400 mb-4 flex-1">Connect your internal corporate ERP via custom APIM to ingest historical supply chain data.</p>
+                <div class="pt-4 border-t border-slate-700/50">
+                    <button class="w-full py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-xs font-semibold text-white transition-colors border border-slate-700">Initiate OAUTH Connection</button>
+                </div>
+            </div>
+
+        </div>
+    `;
+    lucide.createIcons();
+}
+
+// --- View: B2G / Bank Portfolio (Government Demo) ---
+function renderPortfolio() {
+    const appContent = document.getElementById('app-content');
+
+    appContent.innerHTML = `
+        <div class="mb-8 flex justify-between items-end border-b border-blue-500/20 pb-6">
+            <div>
+                <span class="px-3 py-1 bg-blue-500/10 text-blue-400 border border-blue-500/30 rounded-lg text-xs font-bold uppercase tracking-widest mb-3 inline-block">Enterprise View</span>
+                <h2 class="text-2xl lg:text-3xl font-heading font-bold text-white mb-2 flex items-center gap-3">
+                    <i data-lucide="layers" class="w-6 h-6 lg:w-8 lg:h-8 text-blue-400"></i>
+                    National Portfolio Monitor
+                </h2>
+                <p class="text-sm text-slate-400 max-w-2xl">High-level aggregation dashboard built for Saudi Central Bank (SAMA) and Vision 2030 entities. Monitor real-time macro carbon trajectories and green capital deployment across the SME sector.</p>
+            </div>
+             <div class="hidden sm:block text-right">
+                 <p class="text-xs text-slate-500 uppercase font-bold tracking-widest mb-1">Active SMEs Monitored</p>
+                 <div class="text-4xl text-white font-heading font-bold">12,408</div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="glass-panel p-6 rounded-2xl border-l-4 border-l-blue-500 bg-gradient-to-r from-blue-900/20 to-transparent">
+                <p class="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2">Total Monitored Footprint</p>
+                <h3 class="text-3xl font-heading font-bold text-white">4.2M <span class="text-sm text-slate-500">tCO2e</span></h3>
+                <p class="text-[10px] text-blue-400 mt-2 font-medium bg-blue-500/10 w-fit px-2 py-1 rounded">-8% Year over Year</p>
+            </div>
+            
+            <div class="glass-panel p-6 rounded-2xl border-l-4 border-l-emerald-500 bg-gradient-to-r from-emerald-900/20 to-transparent">
+                <p class="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2">Green Capital Deployed</p>
+                <h3 class="text-3xl font-heading font-bold text-white">1.8B <span class="text-sm text-slate-500">SAR</span></h3>
+                <p class="text-[10px] text-emerald-400 mt-2 font-medium bg-emerald-500/10 w-fit px-2 py-1 rounded">2,104 Subsidized Loans</p>
+            </div>
+
+            <div class="glass-panel p-6 rounded-2xl border-l-4 border-l-amber-500 bg-gradient-to-r from-amber-900/20 to-transparent">
+                 <p class="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2">Average ESG Score</p>
+                 <h3 class="text-3xl font-heading font-bold text-white">68<span class="text-sm text-slate-500">/100</span></h3>
+                 <p class="text-[10px] text-amber-400 mt-2 font-medium bg-amber-500/10 w-fit px-2 py-1 rounded">Target: 75 by 2030</p>
+            </div>
+        </div>
+
+        <div class="glass-panel rounded-2xl overflow-hidden border border-slate-700/50 shadow-2xl">
+            <div class="p-4 lg:p-6 border-b border-slate-700/50 bg-slate-800/30 flex justify-between items-center gap-2">
+                <h3 class="font-heading font-semibold text-base lg:text-lg text-white">SME Sector Anomalies (High Emitters)</h3>
+                <button class="text-xs text-blue-400 hover:text-white transition-colors">Export Region Data &rarr;</button>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm text-slate-300">
+                    <thead class="text-xs text-slate-400 uppercase tracking-wider bg-slate-800/80 border-b border-slate-700/50">
+                        <tr>
+                            <th class="px-6 py-4 font-semibold">Enterprise Name</th>
+                            <th class="px-6 py-4 font-semibold">Sector</th>
+                            <th class="px-6 py-4 font-semibold">ESG Score</th>
+                            <th class="px-6 py-4 font-semibold text-right">Capital Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-700/50">
+                        <!-- Mock row 1 -->
+                        <tr class="hover:bg-slate-800/30 transition-colors">
+                            <td class="px-6 py-4">
+                                <div class="font-bold text-white">Saudi Aramis Contracting</div>
+                                <div class="text-[10px] text-slate-500">CR: 1010123456 &bull; Riyadh</div>
+                            </td>
+                            <td class="px-6 py-4"><span class="px-2 py-1 rounded bg-slate-800 text-xs text-slate-300">Construction</span></td>
+                            <td class="px-6 py-4">
+                                <span class="text-emerald-400 font-bold">78</span>
+                            </td>
+                            <td class="px-6 py-4 text-right">
+                                <span class="px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase border border-emerald-500/30">Subsidized</span>
+                            </td>
+                        </tr>
+                        <!-- Mock row 2 -->
+                         <tr class="hover:bg-slate-800/30 transition-colors">
+                            <td class="px-6 py-4">
+                                <div class="font-bold text-white">Red Sea Logistics</div>
+                                <div class="text-[10px] text-slate-500">CR: 4030221144 &bull; Jeddah</div>
+                            </td>
+                            <td class="px-6 py-4"><span class="px-2 py-1 rounded bg-slate-800 text-xs text-slate-300">Transportation</span></td>
+                            <td class="px-6 py-4">
+                                <span class="text-red-400 font-bold">42</span>
+                            </td>
+                            <td class="px-6 py-4 text-right">
+                                <span class="px-2 py-1 rounded bg-slate-800 text-slate-500 text-[10px] font-bold uppercase border border-slate-700">Restricted</span>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
